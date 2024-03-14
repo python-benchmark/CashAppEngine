@@ -1,0 +1,74 @@
+{% extends "mobile/index.html" %}
+{% load math cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page" data-cache="never">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:expenses %}" data-icon="back" data-theme="b" data-rel="back">Volver</a>
+        <h1>Listado</h1>
+        <a href="{% url mobile:expenses_add %}" data-icon="add" data-theme="f">Nuevo</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="{% url mobile:expenses_list %}">
+        <ul data-role="listview" data-inset="true">
+            {% regroup list by date as exp_group %}
+            {% for group in exp_group  %}
+                <li data-role="list-divider">{% ifequal today group.grouper %}Hoy{% else %}{{group.grouper}}{% endifequal %}<span class="ui-li-count">${{group.list|sumlist:"amount"|floatformat:2}}</span></li>
+                {% for item in group.list %}
+                <li swipe-options='{"direction": "left", "buttons": [{"style": "r", "value": "Borrar", "href": "javascript:confirmSingleAction(\"{% url expenses_delete %}\",\"{{item.id}}\")"},{"style": "e", "value": "Editar", "href": "{% url mobile:expenses_edit item.id %}"}]}'>
+                    <div>
+                        <h3>{{item.text}} ({{item.subCategory.category.name}})</h3>            
+                        <p>{{item.paymentType.name}}</p>
+                        <span class="ui-li-aside">${{item.amount|floatformat:2}}</span>
+                    </div>
+                </li>
+                {% endfor %}
+                
+            {% endfor %}
+        </ul>
+	</div><!-- /content -->
+
+	<div data-role="footer" class="ui-bar" data-id="footer" data-position="fixed" data-tap-toggle="false">
+		<div class="ui-grid-b">
+			<div class="ui-block-a"><a href="{% url mobile:home %}" data-role="button" data-icon="home" data-iconpos="notext" data-mini="true"></a></div>
+			<div class="ui-block-b">Total: ${{total|floatformat:2}}</div>
+			<div class="ui-block-c"><a data-theme="a" href="#dateFilter" data-rel="popup" data-role="button" data-corners="false" data-iconpos="right" data-mini="true" data-icon="gear" data-inline="true">{{filterStart|date:"d-m-Y"}} | {{filterEnd|date:"d-m-Y"}}</a></div>
+		</div>	
+	</div>
+	
+	<div data-role="popup" id="dateFilter" popup-keep-open data-theme="a" class="ui-corner-all" data-history="false">
+		<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Cerrar</a>
+		<form method="post" action="{% url mobile:expenses_list %}" data-history="false">
+			{% csrf_token %}
+			<div style="padding:10px 20px;">
+              <label for="fromDate">Desde:</label>
+              <input type="date" data-role="datebox" value="{{filterStart|date:"d/m/Y"}}" name="fromDate" id="fromDate" />
+              <label for="toDate">Hasta:</label>
+              <input type="date" data-role="datebox" value="{{filterEnd|date:"d/m/Y"}}" name="toDate" id="toDate" />
+              {% cache 600 "expenses_list" currentCategory %}         
+			   <label for="category">Categor&iacute;a:</label>
+			   <select name="category" id="category" data-overlay-theme="b">
+                    <option data-placeholder='true' value="0">=== Categor&iacute;a ===</option>
+					{% for item in categoryList %}
+			        <option value="{{item.id}}" {% if currentCategory == item.id %}selected="selected"{%endif%}>{{item.name}}</option>
+			        {% endfor %}
+                </select>                
+              {% endcache %}
+	    	  <button type="submit" data-theme="b" data-icon="check">Aplicar</button>
+			</div>
+		</form>
+		
+	</div>
+			
+{% include "mobile/slide_menu.html" %}
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends "mobile/index.html" %}
+{% load math %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page" data-cache="never">
+    <div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:loans %}" data-icon="back" data-theme="b" data-rel="back">Volver</a>
+        <h1>Préstamos</h1>
+        <a href="{% url mobile:loans_add person.id %}" data-icon="add" data-iconpos="notext" data-theme="f">Nuevo Préstamo</a>
+    </div><!-- /header -->
+
+    <div data-role="content">   
+        <ul data-role="listview" data-split-icon="plus" data-split-theme="e" data-inset="true">
+            <li data-role="list-divider">{{person.name}}<span class="ui-li-count ui-li-count-left" id="subtotal-holder" total-prefix="Pagar: $" data-value="0" data-url="{% url mobile:loans_payments_multi_add %}">Pagar: $ 0.00</span><span class="ui-li-count" id="total-holder" total-value="{{total|floatformat:2}}" total-prefix="Total: $">Total: ${{total|floatformat:2}}</span></li>
+            {% for loan in list %}
+            <li swipe-options='{"direction": "left", "buttons": [{"style": "e", "value": "Editar", "href": "{% url mobile:loans_edit person.id loan.id %}"}]}'>
+                <label class='ui-hide-label'><input type="checkbox" name="loan.id" value="{{loan.id}}" summatory="{{loan.remain|floatformat:2}}" data-value="{% if loan.remain > loan.amount|divide:loan.instalments %}{{loan.amount|divide:loan.instalments|floatformat:2}}{%else%}{{loan.remain|floatformat:2}}{%endif%}"/></label>
+                <a href="{% url mobile:loans_payments loan.id %}">
+                <span class="ui-li-count" style="top: 15px;">{{loan.date}}</span>
+                <span class="ui-li-aside" style="margin-top: 30px; ">Resto: ${{loan.remain|floatformat:2}}</span>
+                <div>
+                    <h3>{{loan.reason}}</h3>            
+                    <p>Total: ${{loan.amount|floatformat:2}}</p>
+                    {% if loan.instalments > 1 %}
+                    <p>Monto mensual: ${{loan.amount|divide:loan.instalments|floatformat:2}}</p>
+                    {% endif %}
+                </div></a>
+                <a href="{% url mobile:loans_payments_add loan.id %}">Añadir pago</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+            </div>
+            <div class="ui-block-b">
+                <a href="{% url mobile:loans_list_all person.id %}" data-role="button" data-icon="bars">Todos</a> 
+            </div>
+        </div>
+    </div><!-- /content -->
+    
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

@@ -1,0 +1,60 @@
+{% extends "mobile/index.html" %}
+{% load math %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page" data-cache="never">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:home %}" data-icon="back" data-iconpos="notext"></a>
+        <h1>Ingresos</h1>
+        <a href="{% url mobile:income_add %}" data-icon="add" data-theme="f">Nuevo</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="{% url mobile:income_list %}">	
+        <ul data-role="listview" data-inset="true">
+            {% regroup list by period as income_group %}
+            {% for group in income_group  %}
+                <li data-role="list-divider">{{group.grouper|date:"F Y"}}<span class="ui-li-count">${{group.list|sumlist:"amount"|floatformat:2}}</span></li>
+                {% for item in group.list %}
+                <li swipe-options='{"direction": "left", "buttons": [{"style": "r", "value": "Borrar", "href": "javascript:confirmSingleAction(\"{% url income_delete %}\",\"{{item.id}}\")"},{"style": "e", "value": "Editar", "href": "{% url mobile:income_edit item.id %}"}]}'>
+                    <div>
+                        <h3>{{item.period|date:"b, Y"}}</h3>            
+                        <span class="ui-li-aside">${{item.amount|floatformat:2}}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" data-id="footer" data-position="fixed" data-tap-toggle="false">
+		<div class="ui-grid-a">
+			<div class="ui-block-a"><a href="{% url mobile:home %}" data-role="button" data-icon="home" data-iconpos="notext" data-mini="true"></a></div>
+			<div class="ui-block-b"><a data-theme="a" href="#IncdateFilter" data-rel="popup" data-role="button" data-corners="false" data-iconpos="right" data-mini="true" data-icon="gear" data-inline="true">{{filterStart|date:"M, Y"}}</a></div>	   
+		</div>	
+	</div>
+	
+	<div data-role="popup" id="IncdateFilter" popup-keep-open data-theme="a" class="ui-corner-all" data-history="false">
+		<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Cerrar</a>
+		<form method="post" action="{% url mobile:income_list %}" data-history="false">
+			<div style="padding:10px 20px;">
+              <label for="fromDate">Desde:</label>
+              <input type="date" data-role="datebox" value="{{filterStart|date:"m/Y"}}" data-options='{"theme": "sense-ui", "mode": "scroller", "display": "inline", "dateFormat": "mm/yy", "dateOrder": "MMyy"}' name="fromDate" id="fromDate" />
+              <button type="submit" data-theme="b" data-icon="check">Aplicar</button>
+			</div>
+		</form>
+	</div>
+
+{% include "mobile/slide_menu.html" %}
+
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

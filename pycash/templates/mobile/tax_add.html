@@ -1,0 +1,87 @@
+{% extends "mobile/index.html" %}
+{% load cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:tax %}" data-icon="minus" data-theme="b" data-rel="back">Cancelar</a>
+        <h1>Impuestos</h1>
+        <a data-icon="check" data-theme="c" form-submit="#form-add-tax-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="back">
+        <form id="form-add-tax-{{requestid}}" action="{% url tax_save %}">
+        	{% csrf_token %}
+        	{% if tax %}
+        		<input type="hidden" name="id" value="{{tax.id}}"/>
+        	{% endif %}
+            <ul data-role="listview" data-inset="true">
+            	<li data-role="list-divider">{% if tax %}Editar{% else %}Nuevo{%endif%}</li>
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="service">Identificaci&oacute;n:</label>
+                    <input field-focus="true" type="text" name="service" maxlength="" id="service" value="{% if tax %}{{tax.service}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input type="number" name="amount" id="amount" value="{% if tax %}{{tax.amount}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="expire">Vencimiento:</label>
+                    <input type="date" data-role="datebox" value="{% if tax %}{{tax.expire|date:"d/m/Y"}}{%endif%}" name="expire" id="expire" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="nextExpire">Pr&oacute;ximo:</label>
+                    <input type="date" data-role="datebox" value="{% if tax %}{{tax.nextExpire|date:"d/m/Y"}}{%endif%}" name="nextExpire" id="nextExpire" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="account">Cuenta:</label>
+                    <input type="text" name="account" maxlength="" id="account" value="{% if tax %}{{tax.account}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal">
+                    <legend><b>Tipo de Pago:</b></legend>
+                    {% for ptype in paymentTypeList %}
+                        <input type="radio" name="paymentType.id" id="ptype-{{ptype.id}}" value="{{ptype.id}}" {% if tax and tax.paymentType.id == ptype.id %}checked="checked"{%endif%}/>
+                    	<label for="ptype-{{ptype.id}}">{{ptype.name}}</label>
+                    {% endfor %}                    
+                </fieldset>
+                </div>         
+                <div data-role="fieldcontain">
+                    <label for="category">Categor&iacute;a:</label>
+                    <select name="subCategory.id" id="category" data-overlay-theme="b">
+                    	<option data-placeholder='true' value="0">Categor&iacute;a</option>
+                    {% regroup categoryList by category.name as category_list %}
+					{% for category in category_list %}
+						<optgroup label="{{category.grouper}}">
+				        {% for item in category.list %}
+				        <option value="{{item.id}}" {% if tax and tax.subCategory.id == item.id %}selected{%endif%}>{{item.name}}</option>
+				        {% endfor %}
+					    </optgroup>
+					{% endfor %}
+                    </select>                
+                </div>
+                </li>
+            </ul>
+        </form>
+        {% if tax %}
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+            </div>
+            <div class="ui-block-b">
+                <a onclick='confirmSingleAction("{% url tax_delete %}","{{tax.id}}")' data-role="button" data-icon="delete">Eliminar</a> 
+            </div>
+        </div>
+        {% endif %}   
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>

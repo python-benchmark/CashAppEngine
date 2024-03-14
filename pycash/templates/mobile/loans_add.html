@@ -1,0 +1,65 @@
+{% extends "mobile/index.html" %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:loans_list person.id %}" data-icon="back" data-theme="b" data-rel="back">Cancelar</a>
+        {% if loan %}
+        <h1>Editar Préstamo [{{person.name}}]</h1>
+        {% else %}
+        <h1>Nuevo Préstamo [{{person.name}}]</h1>
+        {% endif %}
+        <a data-icon="check" data-theme="c" form-submit="#form-add-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="{% url mobile:loans_list person.id %}">	
+        <form id="form-add-{{requestid}}" action="{% url loan_save %}">
+        	{% csrf_token %}
+        	<input type="hidden" name="person.id" value="{{person.id}}"/>
+        	{% if loan %}
+        	<input type="hidden" name="id" value="{{loan.pk}}"/>
+        	{% endif %}
+            <ul data-role="listview" data-inset="true">
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="date">Fecha:</label>
+                    <input type="date" data-role="datebox" value="{% if loan %}{{loan.date|date:"d/m/Y"}}{%else%}{% now "d/m/Y" %}{%endif%}" name="date" id="date" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input field-focus="true" type="number" name="amount" id="amount" value="{% if loan %}{{loan.amount}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="text">Motivo:</label>
+                    <input type="text" name="reason" maxlength="255" id="text" value="{% if loan %}{{loan.reason}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="instalments">Cuotas:</label>
+                    <input type="number" name="instalments" id="instalments" value="{% if loan %}{{loan.instalments}}{%else%}1{%endif%}"/>
+                </div>                
+                </li>
+            </ul>
+        </form>
+        {% if loan %}
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+            </div>
+            <div class="ui-block-b">
+                <a onclick='confirmSingleAction("{% url loan_delete %}","{{loan.id}}")' data-role="button" data-icon="delete">Eliminar</a> 
+            </div>
+        </div>
+        {% endif %}           
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

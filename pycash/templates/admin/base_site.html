@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{settings.APPLICATION}} Admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{{settings.APPLICATION}} Admin</h1>
+{% endblock %}
+
+{% block userlinks %}<a href="{% url home %}">Index</a> / {{block.super}}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+

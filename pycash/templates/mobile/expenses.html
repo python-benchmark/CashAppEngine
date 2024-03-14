@@ -1,0 +1,53 @@
+{% extends "mobile/index.html" %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+	<div data-role="page">
+		<div data-role="header" data-theme="f" data-position="fixed">
+	        <a href="{% url mobile:home %}" data-icon="back" data-iconpos="notext" data-rel="back"></a>
+	        <h1>Gastos</h1>
+		</div><!-- /header -->
+	
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true">
+	        	<li data-icon="false">
+	        		<a href="{% url mobile:expenses_add %}">
+	        			<div class="menu-element add-icon"><div>Nuevo</div></div>
+	        		</a>
+	        	</li>
+	        	<li data-icon="false">
+	        		<a href="{% url mobile:expenses_list %}">
+	        			<div class="menu-element list-icon"><div>Listado</div></div>
+	        		</a>
+	        	</li>
+	        	<li data-icon="false">
+					<div class="ui-grid-a">
+					    <div class="ui-block-a">
+					    	<a href="{% url mobile:stats %}" class="ui-link-inherit">
+	        					<div class="menu-element chart-icon"><div>Mensual</div></div>
+	        				</a>
+	        			</div>
+					    <div class="ui-block-b">
+					    	<a href="{% url mobile:statsCategory %}" class="ui-link-inherit">
+	        					<div class="menu-element chart-icon"><div>Categorías</div></div>
+	        				</a>					    
+					    </div>
+					</div>	        	
+					<!--	        	
+	        		<a href="{% url mobile:stats %}">
+	        			<div class="menu-element chart-icon"><div>Stats</div></div>
+	        		</a>-->
+	        	</li> 	        	      
+	        </ul>
+		</div><!-- /content -->
+	</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

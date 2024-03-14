@@ -1,0 +1,49 @@
+{% extends "mobile/index.html" %}
+{% load cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:tax %}" data-icon="minus" data-theme="b" data-rel="back">Cancelar</a>
+        <h1>Impuestos</h1>
+        <a data-icon="check" data-theme="c" form-submit="#form-pay-tax-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="back">
+        <form id="form-pay-tax-{{requestid}}" action="{% url tax_pay %}" after-submit-clean="form">
+        	{% csrf_token %}
+       		<input type="hidden" name="id" value="{{tax.id}}"/>
+            <ul data-role="listview" data-inset="true">
+            	<li data-role="list-divider">Pagar {{tax.service}}</li>
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="date">Fecha Pago:</label>
+                    <input type="date" data-role="datebox" value="{% if today < tax.expire %}{{today|date:"d/m/Y"}}{%else%}{{tax.expire|date:"d/m/Y"}}{%endif%}" name="date" id="date" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input type="number" name="amount" id="amount" value="{{tax.amount}}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="nextExpire">Pr&oacute;ximo:</label>
+                    <input type="date" data-role="datebox" value="{{tax.nextExpire|date:"d/m/Y"}}" name="nextExpire" id="nextExpire" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="nextExpire2">Siguiente:</label>
+                    <input type="date" data-role="datebox" value="{{tax.nextExpire2|date:"d/m/Y"}}" name="nextExpire2" id="nextExpire2" />
+                </div>
+                </li>
+            </ul>
+        </form>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>

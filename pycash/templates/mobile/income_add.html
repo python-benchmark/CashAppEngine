@@ -1,0 +1,43 @@
+{% extends "mobile/index.html" %}
+{% load cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:income_list %}" data-icon="minus" data-theme="b" data-rel="back">Cancelar</a>
+        <h1>Ingresos</h1>
+        <a data-icon="check" data-theme="c" form-submit="#form-add-income-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+        <form id="form-add-income-{{requestid}}" action="{% url income_save %}">
+        	{% csrf_token %}
+        	{% if income %}
+        		<input type="hidden" name="id" value="{{income.id}}" />
+        	{% endif %}
+            <ul data-role="listview" data-inset="true">
+            	<li data-role="list-divider">{% if income %}Editar{% else %}Nuevo{%endif%}</li>
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="date">Fecha:</label>
+                    <input type="date" data-role="datebox" value="{% if income %}{{income.period|date:"m/Y"}}{%else%}{% now "m/Y" %}{%endif%}" name="period" id="date" data-options='{"dateFormat": "mm/yy", "dateOrder": "MMyy"}'/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input field-focus="true" type="number" name="amount" id="amount" value="{% if income %}{{income.amount}}{%endif%}"/>
+                </div>
+                </li>
+            </ul>
+        </form>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>

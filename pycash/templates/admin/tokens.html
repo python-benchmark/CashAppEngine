@@ -1,0 +1,28 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n adminmedia %}
+{% block content %}
+<table>
+<tr>
+<th>App Key</th>
+<th>Linked</th>
+<th><th>
+</tr>
+{% for token in tokens %}
+<tr>
+<td>{{token.token_key}}</td>
+<td>{{token.updated}}</td>
+<td><a href="{% url admin:storedtoken %}?delete={{token.pk}}">remove</a></td>
+</tr>
+{% endfor %}
+</table>
+<form method="post" action="{% url admin:storedtoken %}">
+{% csrf_token %}
+{% if reqid %}
+<input type="hidden" name="reqid" value="{{reqid}}"/>
+<p>Go to <a target="_blank" href="{{requrl}}">{{requrl}}</a>, complete the steps and submit again.</p>
+<input type="submit" value="{% trans "Finish" %}"/>
+{% else %}
+<input type="submit" value="{% trans "Link" %}"/>
+{% endif %} 
+</form>
+{% endblock %}
