@@ -1,0 +1,43 @@
+{% extends "mobile/index.html" %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page" data-cache="never">
+	<div data-role="header" data-theme="b" data-position="fixed">
+        <a href="{% url mobile:loans_list loan.person.id %}" data-icon="back" data-theme="b" data-rel="back">Volver</a>
+        <h1>{{loan.person.name}}</h1>
+        <div class="ui-body-a ui-body">
+		<div data-role="navbar" data-iconpos="left">
+			<ul>
+				<li><a href="{% url mobile:loans_edit loan.person.id loan.id %}" data-icon="edit" data-theme="c">Editar</a></li>
+				<li><a href="{% url mobile:loans_payments_add loan.id %}" data-icon="add" data-iconpos="notext" data-theme="f">Nuevo Pago</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		</div>
+	</div><!-- /header -->
+
+	<div data-role="content" data-return="{% url mobile:loans_payments loan.id %}">
+		<ul data-role="listview" data-theme="e" data-inset="true">
+			<li data-role="list-divider">Pagos: {{loan.reason}}<span class="ui-li-count">Pagado: ${{total|floatformat:2}}</span></li>
+			{% for payment in loan.payment_set.all %}
+			<li swipe-options='{"direction": "left", "buttons": [{"style": "r", "value": "Borrar", "href": "javascript:confirmSingleAction(\"{% url payment_delete %}\",\"{{payment.id}}\")"},{"style": "e", "value": "Editar", "href": "{% url mobile:loans_payments_edit loan.id payment.id %}"}]}'>
+				<h3>{{payment.date}}</h3>
+				<span class="ui-li-aside">${{payment.amount|floatformat:2}}</span>
+			</li>
+			{% empty %}
+			<li>Sin pagos registrados</li>
+			{% endfor %}
+		</ul>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

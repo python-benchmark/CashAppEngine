@@ -1,0 +1,78 @@
+{% extends "mobile/index.html" %}
+{% load cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:expenses %}" data-icon="minus" data-theme="b" data-rel="back">Cancelar</a>
+        <h1>Gastos</h1>
+        {% if expense %}
+            <a data-icon="check" data-theme="c" form-submit="#form-add-expense-{{requestid}}" return="back">Guardar</a>
+        {% else %}
+            <a data-icon="check" data-theme="c" form-submit="#form-add-expense-{{requestid}}">Guardar</a>
+        {% endif %}
+	</div><!-- /header -->
+
+	<div data-role="content">
+        <form id="form-add-expense-{{requestid}}" action="{% url expenses_save %}" after-submit-clean="amount,text">
+        	{% csrf_token %}
+        	{% if expense %}
+        		<input type="hidden" name="id" value="{{expense.id}}" />
+        	{% endif %}
+            <ul data-role="listview" data-inset="true">
+            	<li data-role="list-divider">{% if expense %}Editar{% else %}Nuevo{%endif%}</li>
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="date">Fecha:</label>
+                    <input type="date" data-role="datebox" value="{% if expense %}{{expense.date|date:"d/m/Y"}}{%else%}{% now "d/m/Y" %}{%endif%}" name="date" id="date" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input field-focus="true" type="text" name="amount" id="amount" value="{% if expense %}{{expense.amount}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="text">Descripci&oacute;n:</label>
+                    <input type="text" name="text" maxlength="" id="text" value="{% if expense %}{{expense.text}}{%endif%}"/>
+                </div>
+                <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal">
+                    <legend><b>Tipo de Pago:</b></legend>
+                    {% for ptype in paymentTypeList %}
+                        <input type="radio" name="paymentType.id" id="ptype-{{ptype.id}}" value="{{ptype.id}}" {% if expense and expense.paymentType.id == ptype.id %}checked="checked"{%endif%}/>
+                    	<label for="ptype-{{ptype.id}}">{{ptype.name}}</label>
+                    {% endfor %}                    
+                </fieldset>
+                </div>
+                {% cache 600 "expenses_form" expense %}         
+                <div data-role="fieldcontain">
+                    <label for="category">Categor&iacute;a:</label>
+                    <select name="subCategory.id" id="category" data-overlay-theme="b">
+                    	<option data-placeholder='true' value="0">Categor&iacute;a</option>
+                    {% regroup categoryList by category.name as category_list %}
+					{% for category in category_list %}
+						<optgroup label="{{category.grouper}}">
+				        {% for item in category.list %}
+				        <option value="{{item.id}}" {% if expense and expense.subCategory.id == item.id %}selected{%endif%}>{{item.name}}</option>
+				        {% endfor %}
+					    </optgroup>
+					{% endfor %}
+                    </select>                
+                </div>
+                {% endcache %}
+                </li>
+            </ul>
+        </form>
+	</div><!-- /content -->
+	
+	{% include "mobile/slide_menu.html" %}
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>

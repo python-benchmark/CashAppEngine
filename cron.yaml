@@ -1,0 +1,25 @@
+cron:
+- description: weekly backup
+  url: /cron/backup/
+  schedule: every mon 0:00
+  timezone: America/Argentina/Buenos_Aires
+
+- description: update events
+  url: /cron/updateevent/
+  schedule: every 60 minutes
+  timezone: America/Argentina/Buenos_Aires
+
+- description: generate current month stats
+  url: /cron/generatemonthstats/
+  schedule: every sun 0:00
+  timezone: America/Argentina/Buenos_Aires
+
+- description: generate previous month stats
+  url: /cron/generatestats/
+  schedule: 3rd day of month 0:00
+  timezone: America/Argentina/Buenos_Aires
+
+- description: generate previous month report
+  url: /cron/report/
+  schedule: 3rd day of month 0:00
+  timezone: America/Argentina/Buenos_Aires

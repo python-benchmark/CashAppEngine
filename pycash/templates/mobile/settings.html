@@ -1,0 +1,28 @@
+{% extends "mobile/index.html" %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+	<div data-role="page">
+		<div data-role="header" data-position="fixed">
+	        <a href="{% url mobile:home %}" data-icon="back" data-iconpos="notext" data-rel="back"></a>
+	        <h1>Configuraci&oacute;n</h1>
+		</div><!-- /header -->
+	
+		<div data-role="content">
+			<ul data-role="listview" data-inset="true">
+	        	<li><a href="{% url mobile:categories %}">Categor&iacute;as</a></li>
+	        	<li><a href="{% url mobile:subcategories %}">Sub Categor&iacute;as</a></li>
+	        	<li><a href="{% url mobile:paymentTypes %}">Tipos de Pago</a></li>         
+	        </ul>
+		</div><!-- /content -->
+	</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

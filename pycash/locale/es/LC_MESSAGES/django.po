@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pycash\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-20 13:09-0300\n"
+"PO-Revision-Date: 2012-09-20 13:12-0300\n"
+"Last-Translator: Gabriel <gabriel@opensuse.org>\n"
+"Language-Team: es <es>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: .\validators.py:23 .\controllers\ExpenseController.py:182
+msgid "Enter a valid amount."
+msgstr "Ingrese un monto válido."
+
+#: .\controllers\CardController.py:63 .\controllers\CardController.py:81
+#, python-format
+msgid "Card '%s' already exists."
+msgstr ""
+
+#: .\controllers\CategoryController.py:59
+#: .\controllers\CategoryController.py:71
+#, python-format
+msgid "Category '%s' already exists."
+msgstr ""
+
+#: .\controllers\DebitsController.py:85 .\controllers\DebitsController.py:99
+#, python-format
+msgid "Debit '%s' already exists."
+msgstr ""
+
+#: .\controllers\ExpenseController.py:176
+msgid "Enter a valid date."
+msgstr "Ingrese una fecha válida."
+
+#: .\controllers\ExpenseController.py:187 .\controllers\TaxController.py:174
+msgid "Select a valid category."
+msgstr "Seleccione una categoría."
+
+#: .\controllers\ExpenseController.py:191 .\controllers\TaxController.py:178
+msgid "Select a valid payment type."
+msgstr "Seleccione un tipo de pago."
+
+#: .\controllers\ExpenseController.py:220
+#, python-format
+msgid "Updated expense <b>%(text)s</b> for <b>%(date)s</b>."
+msgstr ""
+
+#: .\controllers\ExpenseController.py:222
+#, python-format
+msgid "Created expense <b>%(text)s</b> for <b>%(date)s</b>."
+msgstr ""
+
+#: .\controllers\LoanController.py:100
+msgid "Reason is required."
+msgstr "El motivo es requerido."
+
+#: .\controllers\PaymentController.py:78
+msgid "The entered amount is greater than the amount owed."
+msgstr "El monto es mayor al adeudado."
+
+#: .\controllers\PaymentTypeController.py:63
+#: .\controllers\PaymentTypeController.py:77
+#, python-format
+msgid "Payment Type '%s' already exists."
+msgstr ""
+
+#: .\controllers\PersonController.py:72
+msgid "Name is required."
+msgstr "El nombre es requerido."
+
+#: .\controllers\PersonController.py:79 .\controllers\PersonController.py:93
+#, python-format
+msgid "Person '%s' already exists."
+msgstr ""
+
+#: .\controllers\StatsController.py:203
+#, python-format
+msgid "Created expense <b>%(text)s</b> of <b>%(date)s</b>"
+msgstr ""
+
+#: .\controllers\StatsController.py:218
+#, python-format
+msgid "Updated expense <b>%(text)s</b> of <b>%(date)s</b>"
+msgstr ""
+
+#: .\controllers\SubCategoryController.py:66
+#: .\controllers\SubCategoryController.py:71
+#: .\controllers\SubCategoryController.py:83
+#, python-format
+msgid "Sub Category '%s' already exists."
+msgstr ""
+
+#: .\controllers\TaxController.py:99
+#, python-format
+msgid "Updated Service <b>%(service)s</b>."
+msgstr ""
+
+#: .\controllers\TaxController.py:101
+#, python-format
+msgid "Created Tax for Service <b>%(service)s</b>."
+msgstr ""
+
+#: .\controllers\TaxController.py:211
+msgid "Enter next expire date."
+msgstr "Ingrese próximo vencimiento."
+
+#: .\controllers\TokenController.py:111
+msgid "Token already exists."
+msgstr ""

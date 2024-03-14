@@ -1,0 +1,71 @@
+{% extends "mobile/index.html" %}
+{% load math cache %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="e" data-position="fixed">
+        <a href="{% url mobile:loans_list loan.person.id %}" data-icon="back" data-theme="b" data-rel="back">Cancelar</a>
+        {% if loans %}
+        <h1>Pago {{loansText}}</h1>
+        {% else %}
+        <h1>Pago {{loan.reason}} [{{loan.person.name}}]</h1>
+        {% endif %}
+        <a data-icon="check" data-theme="c" form-submit="#form-add-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+        <form id="form-add-{{requestid}}" action="{% url payment_save %}">
+        	{% csrf_token %}
+        	{% if loans %}
+        	{% for l in loans %}
+        	<input type="hidden" name="loan.ids" value="{{l}}"/>
+        	{% endfor %}
+        	{% else %}
+        	<input type="hidden" name="loan.id" value="{{loan.id}}"/>
+        	{% endif %}
+        	{% if payment %}
+        	<input type="hidden" name="id" value="{{payment.id}}"/>
+        	{% endif %}
+            <ul data-role="listview" data-inset="true">
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="date">Fecha:</label>
+                    <input type="date" data-role="datebox" value="{% if payment %}{{payment.date|date:"d/m/Y"}}{%else%}{% now "d/m/Y" %}{%endif%}" name="date" id="date" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="amount">Monto:</label>
+                    <input field-focus="true" type="number" {% if loans %}readonly="readonly"{%endif%} name="amount" id="amount" value="{% if payment %}{{payment.amount}}{%else%}{{remain|floatformat:2}}{%endif%}"/>
+                </div>
+	            {% cache 600 loan_payment_form %}
+	            <div data-role="fieldcontain">
+	                <label for="category">Categor&iacute;a:</label>
+	                <select name="subCategory.id" id="category" data-overlay-theme="b">
+	                	<option data-placeholder='true' value="0" selected>Categor&iacute;a</option>
+	                	{% regroup categoryList by category.name as category_list %}
+						{% for category in category_list %}
+							<optgroup label="{{category.grouper}}">
+				        	{% for item in category.list %}
+				        	<option value="{{item.id}}">{{item.name}}</option>
+				        	{% endfor %}
+					    	</optgroup>
+						{% endfor %}
+	                </select>                
+	            </div>
+	            {% endcache %}
+                </li>
+            </ul>
+        </form>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+

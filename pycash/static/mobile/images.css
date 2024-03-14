@@ -1,0 +1,51 @@
+.menu-element {
+    background: url(images/menuelement.png) no-repeat top left;
+    border: 0 none;
+    border-radius: 0 0 0 0;
+    box-shadow: none;
+    width: 80px;
+    height: 80px;
+}
+.menu-element div {
+	padding-left: 6em;
+	padding-top: 2em;
+}
+.menu-element .ui-btn-inner {
+    padding-top: 85px;
+    overflow: visible;
+    font-size: 12px;
+    text-shadow: none;    
+}
+
+.menu-element.add-icon{ background-position: 0 0;  } 
+.menu-element.chart-icon{ background-position: 0 -130px;  } 
+.menu-element.expense-icon{ background-position: 0 -260px;  } 
+.menu-element.income-icon{ background-position: 0 -390px;  } 
+.menu-element.list-icon{ background-position: 0 -520px;  } 
+.menu-element.loan-icon{ background-position: 0 -650px;  } 
+.menu-element.tax-icon{ background-position: 0 -780px;  } 
+
+*/
+.menu-element.expense {
+    background-position: 0px 0px;
+    text-indent: -2px;
+}
+.menu-element.loan {
+    background-position: 0px -100px;
+    text-indent: -12px;
+}
+.menu-element.additem {
+    background-position: 0px -200px;
+}
+.menu-element.listitem {
+    background-position: 0px -300px;
+}
+.menu-element.tax {
+	background: url(images/icons/tax-icon.png) no-repeat top left;
+}
+.menu-element.income {
+	background: url(images/icons/income-icon.png) no-repeat top left;
+}
+.menu-element.chart {
+	background: url(images/icons/chart-icon.png) no-repeat top left;
+}*/

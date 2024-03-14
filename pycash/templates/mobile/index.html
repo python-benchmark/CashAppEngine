@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+<title>{{settings.APPLICATION}} Mobile</title>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png"/>
+<link rel="icon" href="{{ STATIC_URL }}images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="{{settings.JQMOBILE_URL}}/{{settings.MOBILE_VERSION}}/jquery.mobile-{{settings.MOBILE_VERSION}}.min.css" />
+<link media="screen" href="{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.simpledialog.min.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.notify.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.core.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.sense-ui.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.android-ics.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/mobile.extra.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/swipe.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/images.css" type="text/css" rel="stylesheet" />
+<link media="screen" href="{{ STATIC_URL }}mobile/mobile.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+</head>
+<body style="display: none;">
+{% block content %}
+<div data-role="page" id="main">
+
+    <div data-role="header">
+        {% if user.is_staff %}
+        <a href="{% url admin:index %}" data-icon="gear" data-iconpos="notext" data-ajax="false">Administration</a>
+        {% endif %}
+        <h1>{{settings.APPLICATION}} v{{settings.VERSION}} (jqm {{settings.MOBILE_VERSION}})</h1>
+        <a href="{% url auth_logout %}" data-icon="delete" data-iconpos="notext" class="ui-btn-right" data-ajax="false">Logout</a>
+    </div><!-- /header -->
+
+    <div data-role="content">
+        <ul data-role="listview" data-inset="true">
+            <li data-icon="false">
+                <a href="{% url mobile:expenses %}" data-prefetch>
+                    <div class="menu-element expense-icon"><div>Gastos</div></div>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="{% url mobile:loans %}">
+                    <div class="menu-element loan-icon"><div>Pr&eacute;stamos</div></div>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="{% url mobile:tax %}">
+                    <div class="menu-element tax-icon"><div>Impuestos</div></div>
+                </a>
+            </li>
+            <li data-icon="false">
+                <a href="{% url mobile:income_list %}">
+                    <div class="menu-element income-icon"><div>Ingresos</div></div>
+                </a>
+            </li>                     
+        </ul>       
+    </div><!-- /content -->
+
+</div><!-- /page -->
+{% endblock %}
+</body>
+<script type="text/javascript" src="{{settings.JQURL}}/{{settings.JQUERY_VERSION}}/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/functions.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/swipe.list.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/application.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.postpatch.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.core.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.datetime.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.core-es.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.datetime-es.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mobile/lib/mobiscroll/mobiscroll.android-ics.js"></script>
+<script type="text/javascript">
+    $(function() {
+    	var jqmobileurl = "{{settings.JQMOBILE_URL}}";
+        $.cachedScript(jqmobileurl + "/{{settings.MOBILE_VERSION}}/jquery.mobile-{{settings.MOBILE_VERSION}}.min.js").done(function() {
+            $.cachedScript("{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.simpledialog2.js");
+            $.cachedScript("{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.notify.js");
+            $.cachedScript("{{ STATIC_URL }}mobile/lib/jqm/jquery.mobile.mobiscroll.js");   
+        });
+    });
+</script> 
+</html>

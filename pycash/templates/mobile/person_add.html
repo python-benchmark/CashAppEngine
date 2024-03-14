@@ -1,0 +1,36 @@
+{% extends "mobile/index.html" %}
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block header %}
+{{ block.super }} 
+{% endblock %}
+<body>
+{% block content %}
+<div data-role="page">
+	<div data-role="header" data-theme="f" data-position="fixed">
+        <a href="{% url mobile:loans %}" data-icon="back" data-rel="back">Volver</a>
+        <h1>Nueva Persona</h1>
+        <a data-icon="check" data-theme="c" form-submit="#form-add-person-{{requestid}}" return="back">Guardar</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+        <form id="form-add-person-{{requestid}}" action="{% url person_save %}" after-submit-clean="name">
+        	{% csrf_token %}
+            <ul data-role="listview" data-inset="true">
+                <li>
+                <div data-role="fieldcontain">
+                    <label for="name">Nombre:</label>
+                    <input field-focus="true" field-clear="true" type="text" id="name" name="name" maxlength="255" value=""/>
+                </div>
+                </li>
+            </ul>
+        </form>
+	</div><!-- /content -->
+		
+</div><!-- /page -->
+{% endblock %}
+</body>
+</html>
+
+
